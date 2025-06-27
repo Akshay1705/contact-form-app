@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Admin\MessageController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -26,6 +27,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/contact', [ContactController::class, 'index']);
     Route::post('/contact', [ContactController::class, 'store']);
+
+    Route::get('/admin/messages', [MessageController::class, 'index']);
+
+    Route::delete('/admin/messages/{id}', [MessageController::class, 'destroy']);
 });
 
 require __DIR__.'/auth.php';
