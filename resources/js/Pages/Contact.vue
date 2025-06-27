@@ -16,16 +16,12 @@
             </div>
 
             <div>
-                <label class="block">Message</label>
-                <textarea v-model="form.message" class="w-full border rounded p-2"></textarea>
-                <p v-if="form.errors.message" class="text-red-500">{{ form.errors.message }}</p>
+                <label>Phone Number</label>
+                <input v-model="form.phone_number" type="text" class="w-full border rounded p-2" />
+                <div class="text-red-500 text-sm" v-if="form.errors.phone_number">{{ form.errors.phone_number }}</div>
             </div>
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Send</button>
-
-            <p v-if="$page.props.flash.success" class="text-green-600 mt-2">
-                {{ $page.props.flash.success }}
-            </p>
         </form>
     </div>
 </template>
@@ -37,9 +33,9 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 defineOptions({ layout: AppLayout })
 
 const form = useForm({
-    name: '',
-    email: '',
-    message: ''
+  name: '',
+  email: '',
+  phone_number: '',
 })
 
 const submit = () => {

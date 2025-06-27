@@ -18,11 +18,24 @@ class ContactController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email',
-            'message' => 'required|string|min:10',
+            'phone_number' => 'required|string|max:15',
         ]);
 
         ContactMessage::create($validated);
 
-        return redirect('/contact')->with('success', 'Message saved successfully!');
+        return redirect('/admin/messages')->with([
+            'success' => 'Contact added successfully!',
+            'action' => 'added'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        ContactMessage::findOrFail($id)->delete();
+
+        return redirect('/admin/messages')->with([
+            'success' => 'Contact deleted.',
+            'action' => 'deleted'
+        ]);
     }
 }
