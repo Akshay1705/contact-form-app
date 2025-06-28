@@ -11,14 +11,12 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [MessageController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -31,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/messages', [MessageController::class, 'index']);
 
     Route::delete('/admin/messages/{id}', [MessageController::class, 'destroy']);
+    Route::put('/admin/messages/{id}', [ContactController::class, 'update']);
+
+    Route::get('/admin/messages/export', [MessageController::class, 'export'])->name('contacts.export');
 });
 
 require __DIR__.'/auth.php';

@@ -45,4 +45,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the contacts for the user.
+     */
+    
+    public function contacts()
+    {
+        return $this->hasMany(\App\Models\ContactMessage::class);
+    }
 }

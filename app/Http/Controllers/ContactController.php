@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\ContactMessage;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -21,7 +22,12 @@ class ContactController extends Controller
             'phone_number' => 'required|string|max:15',
         ]);
 
-        ContactMessage::create($validated);
+        ContactMessage::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone_number' => $validated['phone_number'],
+            'user_id' => Auth::id(),
+        ]);
 
         return redirect('/admin/messages')->with([
             'success' => 'Contact added successfully!',
@@ -37,5 +43,19 @@ class ContactController extends Controller
             'success' => 'Contact deleted.',
             'action' => 'deleted'
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:100',
+            'email' => 'required|email',
+            'phone_number' => 'required|string|max:15',
+        ]);
+
+        $contact = ContactMessage::findOrFail($id);
+        $contact->update($validated);
+
+        return back()->with('success', 'Contact updated successfully.');
     }
 }
